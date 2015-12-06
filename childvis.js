@@ -29,26 +29,55 @@ var appendYears = d3.select('body .years').selectAll('button')
                                           })
                                           ;
 
+var preInitialize = d3.select('body .visual').selectAll('div')
+                                             .data(_.range(9))
+                                             .enter().append('div');
+
+
 var render = function(year){
+  console.log(d3.select(this))
   d3.select('body .yearIndicator').selectAll('p').remove();
   var dataArray = filterByYear(year);
   var showYear = d3.select('body .yearIndicator').append('p').text('Year Selected: ' + year)
-  var buildCharts = d3.select('body .visual').selectAll('div')
-                                             .data(dataArray)
-                                             .attr('style', function(d){
+  // var buildCharts = d3.select('body .visual').selectAll('div')
+  //                                            .data(dataArray)
+  //                                            .attr('style', function(d){
+  //                                             return 'width:' + d[2]/200 + 'px';  
+  //                                            })
+  //                                            .text(function(d){
+  //                                             return d[1]
+  //                                            });
+
+                                            preInitialize.data(dataArray).transition().duration(1000).attr('style', function(d){
                                               return 'width:' + d[2]/100 + 'px';  
                                              })
                                              .text(function(d){
-                                              return d[1]
-                                             });
-
-                                             buildCharts.enter().append('div')
-                                             .attr('style', function(d){
-                                              return 'width:' + d[2]/100 + 'px';  
+                                              return "Age Group: " + d[1] + " # of people: " + d[2]
                                              })
-                                             .text(function(d){
-                                              return d[1]
-                                             });
-  var showYear = d3.select('body ')
+                                             .attr('class','bar');
 
+
+                                             // buildCharts.enter().append('div')
+                                             // .attr('style', function(d){
+                                             //  return 'width:' + d[2]/100 + 'px';  
+                                             // })
+                                             // .text(function(d){
+                                             //  return d[1]
+                                             // });
 }
+  //var showYear = d3.select('body ')
+
+var i = 1988;
+setInterval(function(){
+  render(i)
+  i++;
+  if(i===2014){
+    i=1988;
+  }
+},1000)
+
+
+
+
+
+
