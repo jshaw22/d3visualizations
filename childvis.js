@@ -17,6 +17,14 @@ function howManyYears(){
   return _.uniq(onlyYears)
 }
 
+function ageGroups(){
+  var onlyAges = _.map(window.cleanData, function(data){
+    return data[1];
+  })
+  return _.unique(onlyAges)
+}
+
+console.log(ageGroups())
 var appendYears = d3.select('body .years').selectAll('button')
                                           .data(howManyYears())
                                           .enter().append('button')
@@ -38,7 +46,7 @@ var render = function(year){
   console.log(d3.select(this))
   d3.select('body .yearIndicator').selectAll('p').remove();
   var dataArray = filterByYear(year);
-  var showYear = d3.select('body .yearIndicator').append('p').text('Year Selected: ' + year)
+  var showYear = d3.select('body .yearIndicator').append('p').text('Year Selected: ' + year);
   // var buildCharts = d3.select('body .visual').selectAll('div')
   //                                            .data(dataArray)
   //                                            .attr('style', function(d){
@@ -48,33 +56,36 @@ var render = function(year){
   //                                             return d[1]
   //                                            });
 
-                                            preInitialize.data(dataArray).transition().duration(1000).attr('style', function(d){
-                                              return 'width:' + d[2]/100 + 'px';  
-                                             })
-                                             .text(function(d){
-                                              return "Age Group: " + d[1] + " # of people: " + d[2]
-                                             })
-                                             .attr('class','bar');
+  preInitialize.data(dataArray).transition().duration(1000)
+  .attr('style', function(d){
+    return 'height:' + d[2]/400 + 'px; ' + "margin-top:" + (380-d[2]/400) + 'px';  
+   })
+   .text(function(d){
+    return "Age Group: " + d[1] + "\n#: " + d[2]
+   })
+   .attr('class','bar');
+
+ }
 
 
-                                             // buildCharts.enter().append('div')
-                                             // .attr('style', function(d){
-                                             //  return 'width:' + d[2]/100 + 'px';  
-                                             // })
-                                             // .text(function(d){
-                                             //  return d[1]
-                                             // });
-}
-  //var showYear = d3.select('body ')
+   // var initialAgeGroup = d3.select('body .ageGroup').selectAll('div')
+   //                                           .data(ageGroups())
+   //                                           .enter().append('div')
+   //                                           .attr('class', 'ageAxis')
+   //                                           .text(function(d){
+   //                                            return d;
+   //                                           })
+                                             
 
-var i = 1988;
-setInterval(function(){
-  render(i)
-  i++;
-  if(i===2014){
-    i=1988;
-  }
-},1000)
+
+// var i = 1988;
+// setInterval(function(){
+//   render(i)
+//   i++;
+//   if(i===2014){
+//     i=1988;
+//   }
+// },800)
 
 
 
